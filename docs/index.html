@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Calculate and convert file sizes between bytes, KB, MB, GB, TB. Estimate storage needs.">
+    <meta name="keywords" content="file size calculator, byte converter, MB to GB, storage calculator, data size">
+    <meta property="og:title" content="File Size Calculator — DevKit Tools">
+    <meta property="og:description" content="Calculate and convert file sizes between bytes, KB, MB, GB, TB. Estimate storage needs.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary">
+    <title>File Size Calculator — DevKit Tools</title>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --surface: #161b22;
+            --border: #30363d;
+            --text: #c9d1d9;
+            --text-secondary: #8b949e;
+            --accent: #58a6ff;
+            --accent-hover: #79c0ff;
+            --success: #3fb950;
+            --danger: #f85149;
+            --radius: 6px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .header a { color: var(--text); text-decoration: none; font-weight: 600; font-size: 16px; }
+        .header a:hover { color: var(--accent); }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 32px 24px;
+            flex: 1;
+            width: 100%;
+        }
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #f0f6fc;
+        }
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 32px;
+        }
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+        .card h2 {
+            font-size: 16px;
+            margin-bottom: 16px;
+            color: #f0f6fc;
+        }
+        textarea, input[type="text"], input[type="number"], select {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 12px;
+            color: var(--text);
+            font-size: 14px;
+            font-family: "SF Mono", "Fira Code", "Fira Mono", Menlo, Consolas, monospace;
+            resize: vertical;
+            transition: border-color 0.15s;
+        }
+        textarea:focus, input:focus, select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.15);
+        }
+        button {
+            background: #238636;
+            color: #fff;
+            border: 1px solid rgba(240, 246, 252, 0.1);
+            border-radius: var(--radius);
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        button:hover { background: #2ea043; }
+        button.secondary {
+            background: var(--surface);
+            border: 1px solid var(--border);
+        }
+        button.secondary:hover { background: #30363d; }
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+        .feature-tag {
+            background: rgba(88, 166, 255, 0.1);
+            color: var(--accent);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .output {
+            margin-top: 16px;
+            word-break: break-all;
+        }
+        .footer {
+            text-align: center;
+            padding: 24px;
+            color: var(--text-secondary);
+            font-size: 12px;
+            border-top: 1px solid var(--border);
+        }
+        .footer a { color: var(--accent); text-decoration: none; }
+        .btn-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        .copied { color: var(--success); font-size: 12px; margin-left: 8px; opacity: 0; transition: opacity 0.3s; }
+        .copied.show { opacity: 1; }
+        .label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="https://479464887-rgb.github.io/devkit-site/">← DevKit Tools</a>
+        <span style="color:var(--text-secondary);font-size:13px">File Size Calculator</span>
+    </div>
+    <div class="container">
+        <h1>File Size Calculator</h1>
+        <p class="subtitle">Calculate and convert file sizes between bytes, KB, MB, GB, TB. Estimate storage needs.</p>
+        <div class="features">
+            <span class="feature-tag">Byte / KB / MB / GB / TB</span>
+            <span class="feature-tag">Binary and decimal units</span>
+            <span class="feature-tag">Reverse conversion</span>
+            <span class="feature-tag">Quick reference</span>
+        </div>
+        <div class="card">
+            <h2>Tool</h2>
+            <div id="tool-area">
+                
+<div style="display:flex;gap:8px;align-items:end;margin-bottom:16px;flex-wrap:wrap;">
+    <div style="flex:1;min-width:150px;">
+        <label class="label">Value</label>
+        <input type="number" id="fs-input" value="1" step="any" style="width:100%;">
+    </div>
+    <div style="min-width:100px;">
+        <label class="label">Unit</label>
+        <select id="fs-from">
+            <option value="B">B (Byte)</option>
+            <option value="KB">KB</option>
+            <option value="MB" selected>MB</option>
+            <option value="GB">GB</option>
+            <option value="TB">TB</option>
+            <option value="PB">PB</option>
+        </select>
+    </div>
+</div>
+<div id="fs-result" style="background:var(--bg);border-radius:var(--radius);overflow:hidden;"></div>
+<div style="margin-top:12px;font-size:12px;color:var(--text-secondary);">
+    💡 Binary: 1 KB = 1024 B · Decimal: 1 KB = 1000 B
+</div>
+
+            <script>
+
+const input = document.getElementById('fs-input');
+const fromUnit = document.getElementById('fs-from');
+const result = document.getElementById('fs-result');
+
+const UNITS = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
+const BINARY = [1, 1024, 1048576, 1073741824, 1099511627776, 1125899906842624];
+const DECIMAL = [1, 1000, 1e6, 1e9, 1e12, 1e15];
+
+function calc() {
+    const val = parseFloat(input.value) || 0;
+    const fi = UNITS.indexOf(fromUnit.value);
+    const bytesB = val * BINARY[fi];
+    const bytesD = val * DECIMAL[fi];
+    
+    let html = '';
+    UNITS.forEach((u, i) => {
+        if (u === fromUnit.value) return;
+        html += `<div style="display:flex;justify-content:space-between;padding:8px 12px;border-bottom:1px solid var(--border);font-size:14px;">
+            <span style="color:var(--text-secondary);">${u}</span>
+            <span><strong>${(bytesB / BINARY[i]).toFixed(4)}</strong> <span style="color:var(--text-secondary);font-size:11px;">(binary)</span></span>
+            <span><strong>${(bytesD / DECIMAL[i]).toFixed(4)}</strong> <span style="color:var(--text-secondary);font-size:11px;">(decimal)</span></span>
+        </div>`;
+    });
+    
+    result.innerHTML = `
+        <div style="font-size:13px;color:var(--text-secondary);margin-bottom:8px;">
+            ${val} ${fromUnit.value} = <strong style="color:#f0f6fc;">${bytesB.toLocaleString()}</strong> bytes (binary) / <strong style="color:#f0f6fc;">${bytesD.toLocaleString()}</strong> bytes (decimal)
+        </div>
+        ${html}
+    `;
+}
+
+[input, fromUnit].forEach(el => el.addEventListener('input', calc));
+calc();
+
+            </script>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <a href="https://479464887-rgb.github.io/devkit-site/privacy.html">Privacy</a> ·
+        <a href="https://479464887-rgb.github.io/devkit-site/terms.html">Terms</a> ·
+        © 2026 DevKit Tools
+    </div>
+    <script>
+    function copyText(text, btn) {
+        navigator.clipboard.writeText(text).then(() => {
+            var orig = btn.textContent;
+            btn.textContent = 'Copied!';
+            setTimeout(() => btn.textContent = orig, 1500);
+        });
+    }
+    </script>
+</body>
+</html>
